@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/socialmedia');
+mongoose.connect('mongodb+srv://nish6217:nish6217@cluster0.t5mzq.mongodb.net/socialMediaDatabase?retryWrites=true&w=majority');
 
 const db = mongoose.connection;
 

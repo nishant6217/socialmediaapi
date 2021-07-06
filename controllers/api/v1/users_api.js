@@ -1,5 +1,6 @@
 const User = require('../../../models/user');
-const Post = require('../../../models/post')
+const Post = require('../../../models/post');
+const Article = require('../../../models/article')
 
 const jwt = require('jsonwebtoken');
 
@@ -136,4 +137,42 @@ module.exports.getPost = async (req,res) =>{
         
     }
 
+}
+
+
+module.exports.profile =async (req,res)=>{
+    try {
+        const user = await User.findOne({ _id: req.params.id }).select('-password');
+
+        if (!user)
+            return res.status(404).json({
+                success: false, message: 'User not found'
+            });
+
+        const owner = req.user.id === user.id;
+        const name = req.user.name;
+        const posts = await Post.find({ user: user._id })
+            .sort({ 'createdAt': 'desc' });
+        const articles = await Article.find({ user: user._id }).sort("-createdAt");
+        
+        return res.status(200).json({
+            message: 'User Profile',
+            data: {
+                name,
+                user,
+                posts,
+                articles,
+                owner
+                
+                
+            }
+        });
+
+    } catch (error) {
+        console.log("Error: ", error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error
+        });
+    }
 }
