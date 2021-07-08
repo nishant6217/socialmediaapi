@@ -53,6 +53,7 @@ module.exports.create = async (req , res) => {
             user:req.user._id
         });
         return res.status(200).json({
+            success :"true",
             message:"post-created",
             data :{
                 post :post
@@ -61,6 +62,7 @@ module.exports.create = async (req , res) => {
        } catch (error) {
            console.log('error', error);
            return res.status(500).json({
+               success :"false",
                message:" internal server error"
            })
            
